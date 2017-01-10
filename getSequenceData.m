@@ -26,6 +26,8 @@ elseif strcmpi(clrchng_cortexfile(1:2),'RR')
     clrchng_cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Red\' clrchng_cortexfile];
 elseif strcmpi(clrchng_cortexfile(1:2),'TO')
     clrchng_cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Tobii\' clrchng_cortexfile];
+elseif strcmpi(clrchng_cortexfile(1:2),'MF')
+    clrchng_cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Manfred\' clrchng_cortexfile];
 end
 
 %%----Color Change Calibration----%%
@@ -292,24 +294,32 @@ elseif strcmpi(seq_cortexfile(1:2),'TT')
     cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Timmy\' seq_cortexfile];
 elseif strcmpi(seq_cortexfile(1:2),'RR')
     cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Red\' seq_cortexfile];
-    elseif strcmpi(seq_cortexfile(1:2),'TO')
+elseif strcmpi(seq_cortexfile(1:2),'TO')
     cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Tobii\' seq_cortexfile];
+elseif strcmpi(seq_cortexfile(1:2),'MF')
+   cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Manfred\' seq_cortexfile];
 end
 
-if ~isempty(strfind(lower(itemnum),'seq'))
-     ITMFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\' itemnum '.itm'];
-     CNDFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\' itemnum '.cnd'];
+if strcmpi(seq_cortexfile,'MF161117.2')
+    %somehow item file wasn't loaded correctly but cnd file was
+       ITMFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\' itemnum '.itm'];
+       CNDFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\ckwenzrl.cnd'];
 else
-    if ischar(itemnum)
-        ITMFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\CKWENZ' itemnum '.itm'];
-        CNDFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\CKWENZ' itemnum '.cnd'];
+    if ~isempty(strfind(lower(itemnum),'seq'))
+        ITMFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\' itemnum '.itm'];
+        CNDFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\' itemnum '.cnd'];
     else
-        if itemnum < 10
-            ITMFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\CKWENZ0' num2str(itemnum) '.itm'];
+        if ischar(itemnum)
+            ITMFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\CKWENZ' itemnum '.itm'];
+            CNDFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\CKWENZ' itemnum '.cnd'];
         else
-            ITMFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\CKWENZ' num2str(itemnum) '.itm'];
+            if itemnum < 10
+                ITMFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\CKWENZ0' num2str(itemnum) '.itm'];
+            else
+                ITMFile = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\CKWENZ' num2str(itemnum) '.itm'];
+            end
+            CNDFile = 'C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\CKWENZ.CND';
         end
-        CNDFile = 'C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\CKWENZ.CND';
     end
 end
 
