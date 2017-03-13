@@ -133,15 +133,26 @@
           
 
 %---Data for RR post-lesion random reaction times---%
-sequence_cortex_files = {'RR160308.1','RR160309.1','RR160310.1','RR160311.1',...
-                         'RR160315.1','RR160316.1','RR160317.1','RR160318.1',...
-                         'RR160321.1'};
-item_letter = {'SeqR63','SeqR64','SeqR65','SeqR67',...
-               'SeqR68','SeqR69','SeqR70','SeqR71',...
-               'SeqR72'};
-calibration_cortex_files = {'RR160308.2','RR160309.2','RR160310.2','RR160311.2',...
-                            'RR160315.2','RR160316.2','RR160317.2','RR160318.2',...
-                            'RR160321.2'};
+% sequence_cortex_files = {'RR160308.1','RR160309.1','RR160310.1','RR160311.1',...
+%                          'RR160315.1','RR160316.1','RR160317.1','RR160318.1',...
+%                          'RR160321.1'};
+% item_letter = {'SeqR63','SeqR64','SeqR65','SeqR67',...
+%                'SeqR68','SeqR69','SeqR70','SeqR71',...
+%                'SeqR72'};
+% calibration_cortex_files = {'RR160308.2','RR160309.2','RR160310.2','RR160311.2',...
+%                             'RR160315.2','RR160316.2','RR160317.2','RR160318.2',...
+%                             'RR160321.2'};
+
+%---Data for Manfred pre-lesion random reaction times---%
+% sequence_cortex_files = {'MF161104.2','MF161107.2','MF161109.3','MF161110.3','MF161117.2',...
+%     'MF161121.2','MF161122.2'};
+% calibration_cortex_files = {'MF161104.1','MF161107.1','MF161109.1','MF161110.1','MF161117.1',...
+%     'MF161121.1','MF161122.1'};
+% item_letter = {'RG','RH','RJ','RK','SeqR51',...
+%     'SeqR52','SeqR53'};
+%skipping RI since wasn't forward biased probably didn't load proper
+%condition file; nonforward bias would produce slower RTs
+%SeqR51.itm was default RL itm file not properly loaded 
           
 
 %---Data for 2 random sequences---%
@@ -161,13 +172,18 @@ calibration_cortex_files = {'RR160308.2','RR160309.2','RR160310.2','RR160311.2',
 % item_letter = {'RA','RB','RC','RD','RE'};
 % number_calibration_points = [26 26 26 26 26 26];
 
+%Tobii post-lesion re-acclimation--%
+sequence_cortex_files = {'TO170214.2','TO170215.2','TO170217.2','TO170221.2'};
+calibration_cortex_files = {'TO170214.1','TO170215.1','TO170217.1','TO170221.1'};
+item_letter = {'SeqR38','SeqR39','SeqR40','SeqR41','SeqR42'};
+
 number_calibration_points = 25*ones(1,length(item_letter));
-for file = length(sequence_cortex_files);
+for file = 3:length(sequence_cortex_files);
     getSequenceData(sequence_cortex_files{file},calibration_cortex_files{file},...
         item_letter{file},number_calibration_points(file));
-    close all
+%     close all
 end
-%emailme('Done processing sequence data')
+emailme('Done processing sequence data')
 %%
 %%---[2] Combine Behavior Across several different item sets---%%
 eyedat_dir = ['C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Eye Data\'];
@@ -222,10 +238,11 @@ for file = 1:length(fixation_files);
         trialcnd = per(t).cnd;
         if length(find(trialcnd == all_trials(1,:))) == 1 %if only saw this sequence 1 time
             
-            
-            
+            %code written for ephiz recordings so need to add ~1000 ms
+            %since this is when eye tracking starts
+           fixationstats{t}.fixationtimes = fixationstats{t}.fixationtimes+per(t).alltim(per(t).allval == 100)-1;
             trialdata = analyze_sequence_trial(fixationstats{t},double(item_locations{1,trialcnd-1}),fixwin,...
-                per(t).allval,per(t).alltim);
+                per(t).allval,per(t).alltim,false);
             
             condition{file}(t) = per(t).cnd;
             item_locs{file}{t} = item_locations{1,trialcnd-1};
@@ -233,9 +250,7 @@ for file = 1:length(fixation_files);
             t2f{file}(t,:) = trialdata.t2f;
             cortex_t2f{file}(t,:) = trialdata.cortext2f;
             fixation_accuracy{file}(t,:) = trialdata.accuracy;
-            extrafixations{file}(t,:) = trialdata.extrafixations;
             fixation_duration{file}(t,:) = trialdata.fixation_duration;
-            time_to_leave{file}(t,:) = trialdata.time_to_leave;
             cortex_predicted{file}(t,:) = trialdata.cortexpredict;
             cortex_refixated{file}(t,:) = trialdata.cortexbreak;
             which_sequence{file}(t) = item_locations{2,t}; %1 is predictable, 2 is random
@@ -435,7 +450,7 @@ title('Reaction Times for Items 1-4 for Random Sequences')
 
 %%
 %plot data by session
-
+min_rt = prctile_5;
 means = zeros(1,length(t2f));
 stds = zeros(1,length(t2f));
 nt = zeros(1,length(t2f));
@@ -460,9 +475,15 @@ for sess = 1:length(t2f);
     pct(sess) = sum(sum(t2f{sess}(:,2:4) < min_rt))/sum(sum(~isnan(t2f{sess}(:,2:4))));
 end
 xlabel('session #')
-ylabel('% of RTs < minimum rt')
+ylabel('Mean RT')
 
 figure
 bar(100*pct)
+xlabel('session #')
+ylabel('% of RTs < minimum rt')
 
-
+%%
+all_cortex_rts = [];
+for sess = 1:length(cortex_t2f)
+    all_cortex_rts = [all_cortex_rts; cortex_t2f{sess}];
+end

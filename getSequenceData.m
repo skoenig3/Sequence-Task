@@ -19,21 +19,21 @@ function getSequenceData(seq_cortexfile,clrchng_cortexfile,itemnum,numpoints)
 samprate = 5;%number of ms between samples for ISCAN i.e. 200 Hz
 
 if strcmpi(clrchng_cortexfile(1:2),'PW')
-    clrchng_cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Vivian\' clrchng_cortexfile];
+    clrchng_cortexfile = ['\\towerexablox.wanprc.org\Buffalo\Cortex Data\Vivian\' clrchng_cortexfile];
 elseif strcmpi(clrchng_cortexfile(1:2),'TT')
-    clrchng_cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Timmy\' clrchng_cortexfile];
+    clrchng_cortexfile = ['\\towerexablox.wanprc.org\Buffalo\Cortex Data\Timmy\' clrchng_cortexfile];
 elseif strcmpi(clrchng_cortexfile(1:2),'RR')
-    clrchng_cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Red\' clrchng_cortexfile];
+    clrchng_cortexfile = ['\\towerexablox.wanprc.org\Buffalo\Cortex Data\Red\' clrchng_cortexfile];
 elseif strcmpi(clrchng_cortexfile(1:2),'TO')
-    clrchng_cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Tobii\' clrchng_cortexfile];
+    clrchng_cortexfile = ['\\towerexablox.wanprc.org\Buffalo\Cortex Data\Tobii\' clrchng_cortexfile];
 elseif strcmpi(clrchng_cortexfile(1:2),'MF')
-    clrchng_cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Manfred\' clrchng_cortexfile];
+    clrchng_cortexfile = ['\\towerexablox.wanprc.org\Buffalo\Cortex Data\Manfred\' clrchng_cortexfile];
 end
 
 %%----Color Change Calibration----%%
 if numpoints == 25
-    ITMFile = '\\research.wanprc.org\research\Buffalo Lab\eblab\Cortex Programs\ClrChng\cch25.itm';
-    CNDFile = '\\research.wanprc.org\research\Buffalo Lab\eblab\Cortex Programs\ClrChng\cch25.cnd';
+    ITMFile = '\\towerexablox.wanprc.org\Buffalo\eblab\Cortex Programs\ClrChng\cch25.itm';
+    CNDFile = '\\towerexablox.wanprc.org\Buffalo\eblab\Cortex Programs\ClrChng\cch25.cnd';
     % this is different becasue the spacing is different and I don't have
     % a new item file on the network for the new spacing
     ind_spacex = [-6,-3,0,3,6]; %whats on the network
@@ -44,8 +44,8 @@ if numpoints == 25
         get_ALLdata(clrchng_cortexfile);
 elseif numpoints == 24; 
     %for Red since for used wrong/smaller calibration
-    ITMFile = '\\research.wanprc.org\research\Buffalo Lab\eblab\Cortex Programs\ClrChng\cch25.itm';
-    CNDFile = '\\research.wanprc.org\research\Buffalo Lab\eblab\Cortex Programs\ClrChng\cch25.cnd';
+    ITMFile = '\\towerexablox.wanprc.org\Buffalo\eblab\Cortex Programs\ClrChng\cch25.itm';
+    CNDFile = '\\towerexablox.wanprc.org\Buffalo\eblab\Cortex Programs\ClrChng\cch25.cnd';
     % this is different becasue the spacing is different and I don't have
     % a new item file on the network for the new spacing
     ind_spacex = [-6,-3,0,3,6]; %whats on the network
@@ -56,7 +56,7 @@ elseif numpoints == 24;
         get_ALLdata(clrchng_cortexfile);
 elseif numpoints == 26 %Timmy's Data is differnet for color change for some reason
     ITMFile = 'C:\Users\seth.koenig\Documents\MATLAB\Sequence Task\Item Files\TTcch25.itm';
-    CNDFile = '\\research.wanprc.org\research\Buffalo Lab\eblab\Cortex Programs\ClrChng\cch25.cnd'; 
+    CNDFile = '\\towerexablox.wanprc.org\Buffalo\eblab\Cortex Programs\ClrChng\cch25.cnd'; 
     spacex = [-12,-6,0,6,12];%what actually gets displayed
     spacey = [-8,-4,0,4,8];%what actually gets displayed
     ind_spacex = spacex;
@@ -73,9 +73,9 @@ elseif numpoints == 63 %if data was collected while Drew did his social SCM expe
     if iscell(clrchng_cortexfile)
         %often collected multiple sessions of cch25 in 1 day
         [time_arr1,event_arr1,eog_arr1,~,~,trialcount1]  = ...
-            get_ALLdata(['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Vivian\' clrchng_cortexfile{1}]);
+            get_ALLdata(['\\towerexablox.wanprc.org\Buffalo\Cortex Data\Vivian\' clrchng_cortexfile{1}]);
         [time_arr2,event_arr2,eog_arr2,~,~,trialcount2]  = ...
-            get_ALLdata(['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Vivian\' clrchng_cortexfile{2}]);
+            get_ALLdata(['\\towerexablox.wanprc.org\Buffalo\Cortex Data\Vivian\' clrchng_cortexfile{2}]);
         time_arr = [time_arr1 time_arr2];
         event_arr = [event_arr1 event_arr2];
         minsize = min(size(eog_arr1,1),size(eog_arr2,1));
@@ -289,15 +289,15 @@ ylim([-12.5 12.5])
 
 %%---Sequence Task analysis---%%
 if strcmpi(seq_cortexfile(1:2),'PW')
-    cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Vivian\' seq_cortexfile];
+    cortexfile = ['\\towerexablox.wanprc.org\Buffalo\Cortex Data\Vivian\' seq_cortexfile];
 elseif strcmpi(seq_cortexfile(1:2),'TT')
-    cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Timmy\' seq_cortexfile];
+    cortexfile = ['\\towerexablox.wanprc.org\Buffalo\Cortex Data\Timmy\' seq_cortexfile];
 elseif strcmpi(seq_cortexfile(1:2),'RR')
-    cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Red\' seq_cortexfile];
+    cortexfile = ['\\towerexablox.wanprc.org\Buffalo\Cortex Data\Red\' seq_cortexfile];
 elseif strcmpi(seq_cortexfile(1:2),'TO')
-    cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Tobii\' seq_cortexfile];
+    cortexfile = ['\\towerexablox.wanprc.org\Buffalo\Cortex Data\Tobii\' seq_cortexfile];
 elseif strcmpi(seq_cortexfile(1:2),'MF')
-   cortexfile = ['\\research.wanprc.org\research\Buffalo Lab\Cortex Data\Manfred\' seq_cortexfile];
+   cortexfile = ['\\towerexablox.wanprc.org\Buffalo\Cortex Data\Manfred\' seq_cortexfile];
 end
 
 if strcmpi(seq_cortexfile,'MF161117.2')
