@@ -173,16 +173,23 @@
 % number_calibration_points = [26 26 26 26 26 26];
 
 %Tobii post-lesion re-acclimation--%
-sequence_cortex_files = {'TO170214.2','TO170215.2','TO170217.2','TO170221.2'};
-calibration_cortex_files = {'TO170214.1','TO170215.1','TO170217.1','TO170221.1'};
-item_letter = {'SeqR38','SeqR39','SeqR40','SeqR41','SeqR42'};
+% sequence_cortex_files = {'TO170214.2','TO170215.2','TO170217.2','TO170221.2'};
+% calibration_cortex_files = {'TO170214.1','TO170215.1','TO170217.1','TO170221.1'};
+% item_letter = {'Seq38','Seq39','Seq40','Seq41','Seq42'};
+
+%---Tobii  post-lesion random sequences---%
+sequence_cortex_files = {'TO170323.2','TO170324.2','TO170327.2','TO170328.2','TO170329.2',...
+                        'TO170330.2','TO170331.2'};
+calibration_cortex_files =  {'TO170323.1','TO170324.1','TO170327.1','TO170328.1','TO170329.1',...
+                        'TO170330.1','TO170331.1'};
+item_letter = {'SeqR11','SeqR12','SeqR13','SeqR14','SeqR15','SeqR16','SeqR17'};
 
 number_calibration_points = 25*ones(1,length(item_letter));
-for file = 3:length(sequence_cortex_files);
-    getSequenceData(sequence_cortex_files{file},calibration_cortex_files{file},...
-        item_letter{file},number_calibration_points(file));
-%     close all
-end
+% for file = 1:length(sequence_cortex_files);
+%     getSequenceData(sequence_cortex_files{file},calibration_cortex_files{file},...
+%         item_letter{file},number_calibration_points(file));
+% %     close all
+% end
 emailme('Done processing sequence data')
 %%
 %%---[2] Combine Behavior Across several different item sets---%%
@@ -211,7 +218,7 @@ percentage_completed = zeros(1,length(fixation_files)); %how well they completed
 for file = 1:length(fixation_files);
     load([eyedat_dir fixation_files{file}(1:8) '_' fixation_files{file}(end) '-fixation.mat'])
     
-    if strcmpi(fixation_files{file}(1:2),'RR') %she skips trials on error
+    if per(end).cnd == 425 && length(per) < 424 %then skipps error trials
             percentage_completed(file) = round(100*(all_trials(1,end)-1)/424);
             percentage(file) = round(100*(sum(all_trials(2,:))/(all_trials(1,end)-1)));
     else
@@ -238,9 +245,6 @@ for file = 1:length(fixation_files);
         trialcnd = per(t).cnd;
         if length(find(trialcnd == all_trials(1,:))) == 1 %if only saw this sequence 1 time
             
-            %code written for ephiz recordings so need to add ~1000 ms
-            %since this is when eye tracking starts
-           fixationstats{t}.fixationtimes = fixationstats{t}.fixationtimes+per(t).alltim(per(t).allval == 100)-1;
             trialdata = analyze_sequence_trial(fixationstats{t},double(item_locations{1,trialcnd-1}),fixwin,...
                 per(t).allval,per(t).alltim,false);
             
